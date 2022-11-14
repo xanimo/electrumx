@@ -1,0 +1,26 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+# get args
+for i in "$@"
+do
+case $i in
+    docker=1)
+        USE_SUDO=""
+    ;;
+    docker=0)
+        USE_SUDO="sudo "
+    ;;
+    *)
+        ERROR=1
+    ;;
+esac
+done
+
+if [ "$ERROR" ]; then
+    echo "Please provide a host to build and try again."
+    exit $ERROR
+fi
+
+echo $USE_SUDO

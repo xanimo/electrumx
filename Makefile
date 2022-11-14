@@ -1,13 +1,19 @@
-.PHONY: deps build run test
+.PHONY: deps build clean run test
+
+docker=0
+basedir=`pwd`/contrib/scripts
 
 deps:
-	./contrib/scripts/deps
+	$(basedir)/deps $(docker)
 
 build:
-	./contrib/scripts/build
+	$(basedir)/build
+
+clean:
+	$(basedir)/clean
 
 run:
-	./contrib/scripts/run
+	$(basedir)/run
 
 test:
-	./contrib/scripts/test
+	$(basedir)/test

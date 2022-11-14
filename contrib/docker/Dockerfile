@@ -15,12 +15,11 @@ RUN git clone -b $VERSION https://github.com/xanimo/electrumx.git /home/$USER
 
 WORKDIR /home/$USER
 
-COPY contrib/scripts /contrib/scripts
+COPY ../scripts /contrib/scripts
 COPY requirements.txt .
-COPY  certs/ /certs/
-
+COPY `pwd`/certs/ ./certs/
 RUN if [ -z "$(ls -A ./certs)" ]; then \
-        openssl req -x509 -newkey rsa:4096 -nodes -x509 -days 365 -subj "/O=ElectrumX" -keyout ./certs/privkey.pem -out ./certs/cert.pem -sha256 -days 365; \
+        openssl req -x509 -newkey rsa:4096 -nodes -x509 -days 365 -subj "/O=ElectrumX" -keyout /certs/privkey.pem -out /certs/cert.pem -sha256 -days 365; \
     fi
 
 RUN apt-get update && apt-get install -y \

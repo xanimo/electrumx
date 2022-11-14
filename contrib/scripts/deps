@@ -2,30 +2,7 @@
 export LC_ALL=C
 set -e -o pipefail
 
-# for docker (no sudo):
-USE_SUDO="sudo "
-
-# get args
-echo "$@"
-for i in "$@"
-do
-case $i in
-    -h=*|--host=*)
-        HOST="${i#*=}"
-    ;;
-    -d|--docker)
-        USE_SUDO=""
-    ;;
-    *)
-        ERROR=1
-    ;;
-esac
-done
-
-if [ "$ERROR" ]; then
-    echo "Please provide a host to build and try again."
-    exit $ERROR
-fi
+USE_SUDO=$(`pwd`/contrib/scripts/args docker="$@")
 
 check_tools() {
     for cmd in "$@"; do
@@ -59,10 +36,4 @@ libsecp256k1-0
 
 $USE_SUDO apt-get -y autoremove
 # base dependencies
-check_tools python pip
-
-python -m venv .venv \
-    && source .venv/bin/activate \
-    && python -m pip install -r requirements.txt --upgrade \
-    && python -m setup build \
-    && python -m setup install
+check_tools python pip dotenv

@@ -42,27 +42,4 @@ if ! same_dir "${PWD}" "$(git_root)"; then
     print_warning
     exit 1
 fi
-else
-# get args
-if [ "$@" ]; then
-for i in "$@"
-do
-case $i in
-    -h=*|--host=*)
-        HOST="${i#*=}"
-    ;;
-    -d|--docker)
-        USE_SUDO=""
-    ;;
-    *)
-        ERROR=1
-    ;;
-esac
-done
-
-if [ "$ERROR" ]; then
-    echo "Please provide a host to build and try again."
-    exit $ERROR
-fi
-fi
 fi

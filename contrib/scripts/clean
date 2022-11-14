@@ -1,0 +1,18 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+pushd `pwd`
+rm -rf \
+.venv \
+*.so \
+*.pyd \
+*.whl \
+*.egg-info/ \
+dist/ \
+build/ \
+__pycache__ \
+.pytest_cache \
+*/__pycache__ \
+*/*/__pycache__
+popd

@@ -6,7 +6,7 @@ fastjson
 pip
 plyvel
 pylru
-python-dotenv
+python-dotenv[cli]
 pylru
 pytest
 websockets
