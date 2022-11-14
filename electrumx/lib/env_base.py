@@ -10,8 +10,11 @@
 
 from os import environ
 
-from electrumx.lib.util import class_logger
+from dotenv import load_dotenv
 
+load_dotenv()  # take environment variables from .env.
+
+from electrumx.lib.util import class_logger
 
 class EnvBase:
     '''Wraps environment configuration.'''

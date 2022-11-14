@@ -1,5 +1,12 @@
+aiohttp>=3.3,<4
 aiorpcX[ws]>=0.22.0,<0.23
+aiorpcx
 attrs
+fastjson
+pip
 plyvel
 pylru
-aiohttp>=3.3,<4
+python-dotenv
+pylru
+pytest
+websockets

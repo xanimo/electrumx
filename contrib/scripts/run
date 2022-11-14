@@ -1,0 +1,10 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+# for docker (no sudo):
+USE_SUDO="sudo "
+
+./contrib/scripts/check --path
+
+dotenv run -- python electrumx_server

@@ -1,0 +1,17 @@
+diff --git a/electrumx/lib/env_base.py b/electrumx/lib/env_base.py
+index 6f5d64c..931fdfd 100644
+--- a/electrumx/lib/env_base.py
++++ b/electrumx/lib/env_base.py
+@@ -9,10 +9,11 @@
+ 
+ 
+ from os import environ
++from dotenv import load_dotenv
++load_dotenv()  # take environment variables from .env.
+ 
+ from electrumx.lib.util import class_logger
+ 
+-
+ class EnvBase:
+     '''Wraps environment configuration.'''
+ 

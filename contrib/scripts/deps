@@ -1,0 +1,68 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+# for docker (no sudo):
+USE_SUDO="sudo "
+
+# get args
+echo "$@"
+for i in "$@"
+do
+case $i in
+    -h=*|--host=*)
+        HOST="${i#*=}"
+    ;;
+    -d|--docker)
+        USE_SUDO=""
+    ;;
+    *)
+        ERROR=1
+    ;;
+esac
+done
+
+if [ "$ERROR" ]; then
+    echo "Please provide a host to build and try again."
+    exit $ERROR
+fi
+
+check_tools() {
+    for cmd in "$@"; do
+        if ! command -v "$cmd" > /dev/null 2>&1; then
+            echo "ERR: This script requires that '$cmd' is installed and available in your \$PATH"
+            echo $@
+            $USE_SUDO apt-get update
+            DEBIAN_FRONTEND=noninteractive \
+            $USE_SUDO apt-get -y --no-install-recommends install $@
+        fi
+    done
+}
+
+$USE_SUDO apt-get update
+DEBIAN_FRONTEND=noninteractive \
+$USE_SUDO apt-get install -y --no-install-recommends \
+gettext \
+python3-cryptography \
+python3-pip \
+python3-setuptools \
+zlib1g-dev \
+libsnappy-dev \
+libbz2-dev \
+libgflags-dev \
+liblz4-dev \
+librocksdb-dev \
+libleveldb-dev \
+libboost-all-dev \
+libsodium-dev \
+libsecp256k1-0
+
+$USE_SUDO apt-get -y autoremove
+# base dependencies
+check_tools python pip
+
+python -m venv .venv \
+    && source .venv/bin/activate \
+    && python -m pip install -r requirements.txt --upgrade \
+    && python -m setup build \
+    && python -m setup install

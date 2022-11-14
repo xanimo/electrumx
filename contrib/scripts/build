@@ -1,0 +1,17 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+# for docker (no sudo):
+USE_SUDO="sudo "
+
+./contrib/scripts/check --path
+
+pip install python-dotenv[cli] --upgrade
+dotenv run -- python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade \
+git+https://github.com/dogecoin/ltc-scrypt \
+-r requirements.txt
+python -m setup build
+python -m setup install

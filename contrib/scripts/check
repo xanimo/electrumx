@@ -1,0 +1,68 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+if [ $# -eq 0 ]; then
+    echo "No arguments provided"
+    exit 1
+fi
+
+has_param() {
+    local term="$1"
+    shift
+    for arg; do
+        if [[ $arg == "$term" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+if has_param '--path' "$@"; then
+git_root() {
+    git rev-parse --show-toplevel 2> /dev/null
+}
+
+same_dir() {
+    local resolved1 resolved2
+    resolved1="$(git_root)"
+    resolved2="$(echo `pwd`)"
+    [ "$resolved1" = "$resolved2" ]
+}
+
+print_warning() {
+cat << EOF
+ERR: This script must be invoked from the top level of the git repository
+Hint: This may look something like:
+    contrib/scripts/run.sh
+EOF
+}
+
+if ! same_dir "${PWD}" "$(git_root)"; then
+    print_warning
+    exit 1
+fi
+else
+# get args
+if [ "$@" ]; then
+for i in "$@"
+do
+case $i in
+    -h=*|--host=*)
+        HOST="${i#*=}"
+    ;;
+    -d|--docker)
+        USE_SUDO=""
+    ;;
+    *)
+        ERROR=1
+    ;;
+esac
+done
+
+if [ "$ERROR" ]; then
+    echo "Please provide a host to build and try again."
+    exit $ERROR
+fi
+fi
+fi
