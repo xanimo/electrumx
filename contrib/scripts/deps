@@ -2,7 +2,7 @@
 export LC_ALL=C
 set -e -o pipefail
 
-USE_SUDO=$(`pwd`/contrib/scripts/args docker="$@")
+USE_SUDO=$(`pwd`/contrib/scripts/sudo docker="$@")
 
 check_tools() {
     for cmd in "$@"; do
@@ -17,6 +17,7 @@ check_tools() {
 }
 
 $USE_SUDO apt-get update
+# base dependencies
 DEBIAN_FRONTEND=noninteractive \
 $USE_SUDO apt-get install -y --no-install-recommends \
 gettext \
@@ -33,7 +34,9 @@ libleveldb-dev \
 libboost-all-dev \
 libsodium-dev \
 libsecp256k1-0
-
 $USE_SUDO apt-get -y autoremove
-# base dependencies
-check_tools python pip dotenv
+check_tools python openssl
+
+if [ $(cat ./certs/cert.pem) == "dummycert" ]; then
+    openssl req -x509 -newkey rsa:4096 -nodes -x509 -days 365 -subj "/O=ElectrumX" -keyout ./certs/privkey.pem -out ./certs/cert.pem -sha256 -days 365;
+fi

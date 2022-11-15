@@ -1,0 +1,35 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+ERROR=0
+ERROR_MSG="Please provide a host to build and try again."
+for i in "$@"
+do
+case $i in
+    -h=*|--host=*)
+        HOST=${i#*=}
+        case "$HOST" in
+            "arm-linux-gnueabihf");;
+            "aarch64-linux-gnu");;
+            "x86_64-w64-mingw32");;
+            "i686-w64-mingw32");;
+            "x86_64-apple-darwin14");;
+            "x86_64-pc-linux-gnu");;
+            "i686-pc-linux-gnu");;
+            *)
+                ERROR=1
+                ERROR_MSG="Target host not supported!"
+            ;;
+        esac
+    ;;
+    *) ERROR=1;;
+esac
+done
+
+if [ "$ERROR" ]; then
+    echo $ERROR_MSG
+    exit $ERROR
+fi
+
+echo $HOST
