@@ -2,15 +2,13 @@
 export LC_ALL=C
 set -e -o pipefail
 
+USE_SUDO="sudo "
 # get args
 for i in "$@"
 do
 case $i in
-    docker=1)
+    DOCKER=1)
         USE_SUDO=""
-    ;;
-    docker=0)
-        USE_SUDO="sudo "
     ;;
     *)
         ERROR=1
@@ -19,7 +17,7 @@ esac
 done
 
 if [ "$ERROR" ]; then
-    echo "Please provide a host to build and try again."
+    echo "Unable to sense USE_SUDO. Please try again."
     exit $ERROR
 fi
 

@@ -2,7 +2,7 @@
 export LC_ALL=C
 set -e -o pipefail
 
-USE_SUDO=$(`pwd`/contrib/scripts/sudo docker="$@")
+USE_SUDO=$(`pwd`/contrib/scripts/sudo DOCKER="$@")
 
 check_tools() {
     for cmd in "$@"; do
@@ -20,6 +20,7 @@ $USE_SUDO apt-get update
 # base dependencies
 DEBIAN_FRONTEND=noninteractive \
 $USE_SUDO apt-get install -y --no-install-recommends \
+automake \
 gettext \
 python3-cryptography \
 python3-pip \

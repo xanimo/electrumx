@@ -4,9 +4,22 @@ set -e -o pipefail
 
 ./contrib/scripts/check --path
 
-python -m venv .venv
-source .venv/bin/activate
+if [ "$DOCKER" ]; then
+SYSUSER=$(source .env; echo $USERNAME)
+./contrib/scripts/user DOCKER=1
+USER_ID="$(id -u ${SYSUSER})"
+GROUP_ID="$(id -g ${SYSUSER})"
+echo "Building container for system user: $SYSUSER ($(echo uid=$(id -u $SYSUSER)):$(echo gid=$(id -g $SYSUSER)))"
+docker build -t xanimo/electrumx \
+--build-arg REPO=local \
+--build-arg USERNAME=$SYSUSER \
+--build-arg USER_ID=$USER_ID \
+--build-arg GROUP_ID=$GROUP_ID \
+. --no-cache
+else
+python -m pip install --upgrade pip
 python -m setup build
-python -m pip install --upgrade \
-git+https://github.com/dogecoin/ltc-scrypt \
--r requirements.txt
+python -m pip install --upgrade -r requirements.txt --user
+python -m pip install git+https://github.com/dogecoin/ltc-scrypt --user
+python -m setup install --user
+fi

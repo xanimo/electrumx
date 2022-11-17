@@ -3,7 +3,6 @@ aiorpcX[ws]>=0.22.0,<0.23
 aiorpcx
 attrs
 fastjson
-pip
 plyvel
 pylru
 python-dotenv[cli]

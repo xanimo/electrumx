@@ -18,6 +18,15 @@ has_param() {
     return 1
 }
 
+insideDocker() {
+# apparently this will not work for docker macos
+if [ -n "$(grep 'kthreadd' /proc/2/status 2>/dev/null)" ]; then
+    echo 0
+else
+    echo 1;
+fi
+}
+
 if has_param '--path' "$@"; then
 git_root() {
     git rev-parse --show-toplevel 2> /dev/null
@@ -38,8 +47,12 @@ Hint: This may look something like:
 EOF
 }
 
-if ! same_dir "${PWD}" "$(git_root)"; then
+if ! same_dir "${PWD}" "$(git_root)" && ! insideDocker; then
     print_warning
     exit 1
 fi
+fi
+
+if has_param '--docker' "$@"; then
+    insideDocker
 fi

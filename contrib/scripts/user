@@ -1,0 +1,20 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+USE_SUDO=$(`pwd`/contrib/scripts/sudo DOCKER="$@")
+INSIDE=$(./contrib/scripts/check --docker)
+USERID=$(if [ "$INSIDE" ]; then echo "--uid $USER_ID"; fi)
+
+# create system user to use inside docker container
+SYSUSER=$(source .env; echo $USERNAME)
+if [ ! $(getent group $SYSUSER) ]; then
+    $USE_SUDO addgroup --system $(source .env; echo $USERNAME)
+fi
+if [ ! $(getent passwd $SYSUSER) ]; then
+    $USE_SUDO adduser --system --no-create-home $SYSUSER --ingroup $SYSUSER $USERID
+fi
+
+SYSUSER=$(source .env; echo $USERNAME)
+USER_ID=$(id -u $SYSUSER)
+GROUP_ID=$(id -g $SYSUSER)
