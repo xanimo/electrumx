@@ -2,26 +2,16 @@
 export LC_ALL=C
 set -e -o pipefail
 
-USE_SUDO=$(`pwd`/contrib/scripts/sudo docker="$@")
-
-check_tools() {
-    for cmd in "$@"; do
-        if ! command -v "$cmd" > /dev/null 2>&1; then
-            echo "ERR: This script requires that '$cmd' is installed and available in your \$PATH"
-            echo $@
-            $USE_SUDO apt-get update
-            DEBIAN_FRONTEND=noninteractive \
-            $USE_SUDO apt-get -y --no-install-recommends install $@
-        fi
-    done
-}
-
-$USE_SUDO apt-get update
+$(./contrib/scripts/sudo) apt-get update
 # base dependencies
 DEBIAN_FRONTEND=noninteractive \
-$USE_SUDO apt-get install -y --no-install-recommends \
+$(./contrib/scripts/sudo) apt-get install -y --no-install-recommends \
+automake \
 gettext \
+gosu \
+python-is-python3 \
 python3-cryptography \
+python3-dotenv-cli \
 python3-pip \
 python3-setuptools \
 zlib1g-dev \
@@ -34,9 +24,8 @@ libleveldb-dev \
 libboost-all-dev \
 libsodium-dev \
 libsecp256k1-0
-$USE_SUDO apt-get -y autoremove
-check_tools python openssl
+$(./contrib/scripts/sudo) apt-get -y autoremove
 
-if [ $(cat ./certs/cert.pem) == "dummycert" ]; then
+if [[ $(cat ./certs/cert.pem) == "dummycert" ]]; then
     openssl req -x509 -newkey rsa:4096 -nodes -x509 -days 365 -subj "/O=ElectrumX" -keyout ./certs/privkey.pem -out ./certs/cert.pem -sha256 -days 365;
 fi

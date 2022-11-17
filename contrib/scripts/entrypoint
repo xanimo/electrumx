@@ -1,0 +1,29 @@
+#!/bin/bash
+export LC_ALL=C
+set -e -o pipefail
+
+SYSUSER=$(source .env; echo $USERNAME)
+USER_ID="$(id -u ${SYSUSER})"
+GROUP_ID="$(id -g ${SYSUSER})"
+
+if [ $(echo "$1" | cut -c1) = "-" ]; then
+    echo "$0: assuming arguments for run"
+
+    set -- dotenv "$@"
+fi
+
+if [ $(echo "$1" | cut -c1) = "-" ] || [ "$1" = "dotenv" ]; then
+    if [ ! -d ./db ]; then
+        mkdir -p ./db
+        ulimit -n 1048576
+        chown -R ${USER_ID}:${GROUP_ID} ./db
+    fi
+fi
+
+if [ "$1" = "dotenv" ] ; then
+    echo
+    exec gosu "$SYSUSER" "$@"
+fi
+
+echo
+exec "$@"

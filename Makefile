@@ -1,23 +1,24 @@
-.PHONY: deps build clean run test build-box test-var
+.PHONY: deps build clean run test user
 
-docker=0
-basedir=`pwd`/contrib/scripts
+BASEDIR=$(PWD)/contrib/scripts
 
 deps:
-	$(basedir)/deps $(docker)
+	$(BASEDIR)/deps
 
 build:
-	$(basedir)/build
+	$(BASEDIR)/build
 
 clean:
-	$(basedir)/clean
+	$(BASEDIR)/clean
 
 run:
-	$(basedir)/run
+	$(BASEDIR)/run $(container)
 
 test:
-	$(basedir)/test
+	$(BASEDIR)/test
 
-build-box:
-	docker build -t xanimo/electrumx \
-	. --no-cache
+user:
+	$(BASEDIR)/user
+
+container:
+	$(BASEDIR)/container
