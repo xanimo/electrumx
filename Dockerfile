@@ -1,6 +1,6 @@
 # example of Dockerfile that installs xanimo electrumx 1.16.0-3-11-buster
 # ENV variables can be overriden on the `docker run` command
-ARG VERSION=1.16.0-3-11-buster
+ARG VERSION=1.16.0-bullseye-slim
 
 FROM debian:bullseye-slim
 
@@ -33,7 +33,6 @@ RUN make user
 RUN make build
 
 RUN mkdir -p ./db  \
-    && ulimit -n 1048576 \
     && chown -R ${USER_ID}:${GROUP_ID} ./db
 
 VOLUME ["./db"]

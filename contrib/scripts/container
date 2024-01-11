@@ -15,6 +15,7 @@ if [ ! -d ./db ]; then
     $(./contrib/scripts/sudo) chown -R ${USER_ID}:${GROUP_ID} ./db
 fi
 docker build -t xanimo/electrumx \
+--build-arg PLATFORM=$(./contrib/scripts/detect) \
 --build-arg REPO=local \
 --build-arg USERNAME=$SYSUSER \
 --build-arg USER_ID=$USER_ID \

@@ -86,5 +86,4 @@ else
     detect_os
 fi
 
-echo "${host_triplet[0]}"
 echo "${host_triplet[1]}"
