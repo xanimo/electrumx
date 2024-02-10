@@ -6,5 +6,5 @@ if [ "$container" ]; then
 docker run -d --net=host -v `pwd`/db/:/db --name electrumx xanimo/electrumx:latest
 else
 ./contrib/scripts/check --path
-dotenv -f .env run python electrumx_server
+dotenv python electrumx_server
 fi

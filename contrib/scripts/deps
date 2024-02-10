@@ -26,6 +26,4 @@ libsodium-dev \
 libsecp256k1-0
 $(./contrib/scripts/sudo) apt-get -y autoremove
 
-if [[ $(cat ./certs/cert.pem) == "dummycert" ]]; then
-    openssl req -x509 -newkey rsa:4096 -nodes -x509 -days 365 -subj "/O=ElectrumX" -keyout ./certs/privkey.pem -out ./certs/cert.pem -sha256 -days 365;
-fi
+openssl req -x509 -newkey rsa:4096 -nodes -x509 -days 365 -subj "/O=ElectrumX" -keyout ./certs/privkey.pem -out ./certs/cert.pem -sha256 -days 365;

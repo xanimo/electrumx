@@ -26,7 +26,8 @@ COPY .env .
 COPY Makefile .
 COPY contrib/scripts/ ./contrib/scripts/
 COPY requirements.txt .
-COPY certs/ certs/
+COPY certs/cert.pem certs/cert.pem
+COPY certs/privkey.pem certs/privkey.pem
 
 RUN apt-get update \
     && apt-get install -y git make gcc

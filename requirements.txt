@@ -5,7 +5,7 @@ attrs
 fastjson
 plyvel
 pylru
-python-dotenv[cli]
+python-dotenv
 pylru
 pytest
 websockets
