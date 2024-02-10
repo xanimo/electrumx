@@ -22,6 +22,7 @@ RUN if [ "$REPO" == "remote" ]; then rm -rf /home/$USER && git clone -b $VERSION
 
 WORKDIR /home/$USER
 
+COPY .env .
 COPY Makefile .
 COPY contrib/scripts/ ./contrib/scripts/
 COPY requirements.txt .
