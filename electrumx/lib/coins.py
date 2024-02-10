@@ -1268,6 +1268,7 @@ class Dogecoin(AuxPowMixin, Coin):
     TX_PER_BLOCK = 20
     REORG_LIMIT = 2000
     DESERIALIZER = lib_tx.DeserializerAuxPowSegWit
+    RPC_PORT = 22555
 
 
 class DogecoinTestnet(Dogecoin):
@@ -1279,6 +1280,7 @@ class DogecoinTestnet(Dogecoin):
     WIF_BYTE = bytes.fromhex("f1")
     GENESIS_HASH = ('bb0a78264637406b6360aad926284d54'
                     '4d7049f45189db5664f3c4d07350559e')
+    RPC_PORT = 44555
 
 
 # Source: https://github.com/dashpay/dash
