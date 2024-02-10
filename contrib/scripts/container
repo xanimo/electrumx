@@ -11,7 +11,6 @@ make user
 echo "Building container for system user: $SYSUSER ($(echo uid=$(id -u $SYSUSER)):$(echo gid=$(id -g $SYSUSER)))"
 if [ ! -d ./db ]; then
     mkdir -p ./db
-    ulimit -n 1048576
     $(./contrib/scripts/sudo) chown -R ${USER_ID}:${GROUP_ID} ./db
 fi
 docker build -t xanimo/electrumx \

@@ -22,12 +22,12 @@ RUN if [ "$REPO" == "remote" ]; then rm -rf /home/$USER && git clone -b $VERSION
 
 WORKDIR /home/$USER
 
-COPY .env .
-COPY Makefile .
+COPY .env ./
+COPY Makefile ./
 COPY contrib/scripts/ ./contrib/scripts/
-COPY requirements.txt .
-COPY certs/cert.pem certs/cert.pem
-COPY certs/privkey.pem certs/privkey.pem
+COPY requirements.txt ./
+COPY certs/cert.pem /etc/ssl/certs/cert.pem
+COPY certs/privkey.pem /etc/ssl/certs/privkey.pem
 
 RUN apt-get update \
     && apt-get install -y git make gcc
@@ -36,6 +36,10 @@ RUN make build
 
 RUN mkdir -p ./db  \
     && chown -R ${USER_ID}:${GROUP_ID} ./db
+
+
+ENV SSL_KEYFILE=/etc/ssl/certs/privkey.pem
+ENV SSL_CERTFILE=/etc/ssl/certs/certs.pem
 
 VOLUME ["./db"]
 

@@ -15,7 +15,6 @@ fi
 if [ $(echo "$1" | cut -c1) = "-" ] || [ "$1" = "dotenv" ]; then
     if [ ! -d ./db ]; then
         mkdir -p ./db
-        ulimit -n 1048576
         chown -R ${USER_ID}:${GROUP_ID} ./db
     fi
 fi
